@@ -1,41 +1,46 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
+ font-family: Arial, sans-serif;
+ margin: 0;
+ padding: 0;
+ background-color: #f0f0f0;
 }
-
 header {
-    background-color: #32CD32; /* Lime green */
-    color: white;
-    padding: 20px;
-    text-align: center;
+ background-color: #32CD32; /* Lime green */
+ color: white;
+ padding: 20px;
+ text-align: center;
 }
-
 .description, .partners, .funder {
-    margin: 20px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ margin: 20px;
+ padding: 20px;
+ background-color: white;
+ border-radius: 8px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 h1, h2 {
-    color: #006400; /* Darker green */
+ color: #006400; /* Darker green */
 }
-
 ul {
-    list-style-type: none;
-    padding: 0;
+ list-style-type: none;
+ padding: 0;
 }
-
 li {
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
+ margin: 10px 0;
+ display: flex;
+ align-items: center;
+}
+li img {
+ margin-right: 10px;
+ height: 50px;
 }
 
-li img {
-    margin-right: 10px;
-    height: 50px;
+/* Enlarged title */
+h1 {
+ font-size: 3em;
+}
+
+/* Enlarged UH logo */
+img[alt="University of Helsinki"] {
+ width: 200px;
+ height: auto;
 }
