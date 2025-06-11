@@ -1,73 +1,74 @@
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #e6f5e6; /* Light green throughout */
+ font-family: Arial, sans-serif;
+ margin: 0;
+ padding: 0;
+ background-color: #e6f5e6; /* Light green throughout */
 }
-
 header {
-  background-color: #e6f5e6;
-  padding: 20px 0;
+ background-color: #e6f5e6;
+ padding: 20px 0;
 }
-
 .header-content {
-  display: flex;
-  align-items: center;
-  background-color: white;
-  border-left: 6px solid #32CD32;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+ display: flex;
+ align-items: center;
+ background-color: white;
+ border-left: 6px solid #32CD32;
+ padding: 20px;
+ max-width: 1200px;
+ margin: 0 auto;
+ box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+ border-radius: 8px;
 }
-
 .logo {
-  height: 100px;
-  margin-right: 20px;
+ height: 100px;
+ margin-right: 20px;
 }
-
 h1 {
-  color: #006400;
-  font-size: 3em;
-  margin: 0;
+ color: #006400;
+ font-size: 3em;
+ margin: 0;
 }
-
 section {
-  width: 100%;
-  padding: 40px 0;
+ width: 100%;
+ padding: 40px 0;
 }
-
 .section-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 20px;
+ background-color: white;
+ border-radius: 8px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 h2 {
-  color: #006400;
+ color: #006400;
 }
-
 ul {
-  list-style-type: none;
-  padding: 0;
+ list-style-type: none;
+ padding: 0;
 }
-
 li {
-  margin: 10px 0;
-  display: flex;
-  align-items: center;
+ margin: 10px 0;
+ display: flex;
+ align-items: center;
 }
-
 li img {
-  margin-right: 10px;
-  height: 50px;
+ margin-right: 10px;
+ height: 50px;
 }
-
 img[alt="University of Helsinki"] {
-  width: 200px;
-  height: auto;
+ width: 200px;
+ height: auto;
+}
+img[alt="VTT"] {
+ width: 150px;
+ height: auto;
+}
+img[alt="Business Finland"] {
+ width: 200px;
+ height: auto;
+}
+img[alt="VTT"],
+img[alt="Business Finland"] {
+ margin-right: 40px;
 }
