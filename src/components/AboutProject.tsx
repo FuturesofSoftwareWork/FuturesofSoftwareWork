@@ -85,7 +85,7 @@ const AboutProject = () => {
           className="mt-16 flex flex-wrap justify-center items-center gap-8 md:gap-12"
         >
           <img
-            src="/VTT.jpg"
+            src={`${import.meta.env.BASE_URL}VTT.jpg`}
             alt="VTT"
             className="h-16 md:h-20 object-contain rounded-sm mix-blend-screen"
           />
@@ -94,13 +94,13 @@ const AboutProject = () => {
               Funded by
             </span>
             <img
-              src="/BF.svg"
+              src={`${import.meta.env.BASE_URL}BF.svg`}
               alt="Business Finland"
               className="h-10 md:h-12 object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
             />
           </div>
           <img
-            src="/UH.jpg"
+            src={`${import.meta.env.BASE_URL}UH.jpg`}
             alt="University of Helsinki"
             className="h-16 md:h-20 object-contain rounded-sm mix-blend-screen"
           />
