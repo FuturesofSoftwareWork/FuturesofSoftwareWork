@@ -54,7 +54,6 @@ const WhatIfCarousel: React.FC<WhatIfCarouselProps> = ({ slides }) => {
         onPrev={prevSlide}
         onGoTo={goToSlide}
         isPaused={isPaused}
-        onTogglePause={isPaused ? resume : pause}
         duration={SLIDE_DURATION}
       />
     </div>

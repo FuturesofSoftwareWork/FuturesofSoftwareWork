@@ -1,4 +1,3 @@
-import React from "react";
 import WhatIfCarousel from "./WhatIfCarousel";
 import { whatIfSlides } from "../../data/whatIfSlides";
 

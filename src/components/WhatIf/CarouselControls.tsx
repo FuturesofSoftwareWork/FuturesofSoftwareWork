@@ -1,5 +1,5 @@
 import React from "react";
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CarouselControlsProps {
   totalSlides: number;
@@ -8,7 +8,7 @@ interface CarouselControlsProps {
   onPrev: () => void;
   onGoTo: (index: number) => void;
   isPaused: boolean;
-  onTogglePause: () => void;
+
   duration: number; // Duration of one slide in ms
 }
 
@@ -19,7 +19,7 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
   onPrev,
   onGoTo,
   isPaused,
-  onTogglePause,
+
   duration,
 }) => {
   return (
