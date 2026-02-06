@@ -5,7 +5,12 @@ const Hero = () => {
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-midnight text-white">
       {/* Background with Gradient - Using the new hero image */}
       <div className="absolute inset-0 bg-black z-0" />
-      <div className="absolute inset-0 bg-[url('/hero-bg.png')] bg-cover bg-center opacity-70 z-0" />
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-70 z-0"
+        style={{
+          backgroundImage: `url(${import.meta.env.BASE_URL}hero-bg.png)`,
+        }}
+      />
 
       {/* Gradient Overlay for Text Readability */}
       <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/50 to-transparent z-0" />
