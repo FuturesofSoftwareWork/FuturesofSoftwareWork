@@ -1,3 +1,13 @@
+export type AISignalCategory =
+  | "AI Agents"
+  | "AI Tools"
+  | "SDLC Change"
+  | "Quality Testing"
+  | "Security Risk"
+  | "Org Leadership";
+
+export type DecisionHorizon = "2026" | "2027-2028" | "2029+";
+
 export interface AISignal {
   id: string;
   title: string;
@@ -8,6 +18,11 @@ export interface AISignal {
   date: string;
   status: "published" | "draft";
   tags?: string[];
+  category?: AISignalCategory;
+  whyItMatters?: string[];
+  recommendedActions?: string[];
+  risksAndCaveats?: string[];
+  decisionHorizon?: DecisionHorizon;
 }
 
 export interface ExpertInsight {
@@ -40,3 +55,7 @@ export interface ContentIndex<T> {
   lastUpdated: string;
   items: T[];
 }
+
+export type DrawerContent =
+  | { type: "signal"; data: AISignal }
+  | { type: "insight"; data: ExpertInsight };

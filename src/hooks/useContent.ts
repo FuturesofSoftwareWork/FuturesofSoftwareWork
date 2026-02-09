@@ -52,7 +52,6 @@ export const useContent = ({
 
       const published = index.items
         .filter((entry) => entry.status === "published")
-        .sort((a, b) => b.date.localeCompare(a.date))
         .slice(0, maxItems);
 
       const results = await Promise.allSettled(
