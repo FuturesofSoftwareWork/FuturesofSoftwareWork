@@ -65,7 +65,7 @@ export const useContent = ({
 
       return results
         .filter(
-          (result): result is PromiseFulfilledResult<TItem> =>
+          (result): result is PromiseFulfilledResult<Awaited<TItem>> =>
             result.status === "fulfilled",
         )
         .map((result) => result.value);
