@@ -9,7 +9,6 @@ import type {
 import { defaultAISignals, defaultExpertInsights } from "@/data/defaultContent";
 
 interface UseContentOptions {
-  maxSignals?: number;
   maxInsights?: number;
 }
 
@@ -21,7 +20,6 @@ interface UseContentReturn {
 }
 
 export const useContent = ({
-  maxSignals = 5,
   maxInsights = 3,
 }: UseContentOptions = {}): UseContentReturn => {
   const [signals, setSignals] = useState<AISignal[]>([]);
@@ -82,7 +80,7 @@ export const useContent = ({
       const [signalResult, insightResult] = await Promise.allSettled([
         fetchContentItems<AISignalIndexEntry, AISignal>(
           "ai-signals",
-          maxSignals,
+          Infinity,
         ),
         fetchContentItems<ExpertInsightIndexEntry, ExpertInsight>(
           "expert-insights",
@@ -119,7 +117,7 @@ export const useContent = ({
     return () => {
       cancelled = true;
     };
-  }, [maxSignals, maxInsights, fetchContentItems]);
+  }, [maxInsights, fetchContentItems]);
 
   return { signals, insights, isLoading, error };
 };

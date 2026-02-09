@@ -15,9 +15,10 @@ const formatDetectedDate = (isoString: string): string => {
   });
 };
 
+const SIGNALS_PER_PAGE = 5;
+
 const ContentStream = () => {
   const { signals, insights, isLoading } = useContent({
-    maxSignals: 5,
     maxInsights: 3,
   });
 
@@ -28,6 +29,8 @@ const ContentStream = () => {
 
   const [activeCategory, setActiveCategory] =
     useState<AISignalCategory | null>(null);
+
+  const [visibleCount, setVisibleCount] = useState(SIGNALS_PER_PAGE);
 
   const categories = useMemo(() => {
     const cats = new Set(
@@ -41,6 +44,8 @@ const ContentStream = () => {
   const filteredSignals = activeCategory
     ? signals.filter((s) => s.category === activeCategory)
     : signals;
+
+  const visibleSignals = filteredSignals.slice(0, visibleCount);
 
   return (
     <section className="bg-midnight min-h-screen py-20 px-4 relative">
@@ -63,7 +68,10 @@ const ContentStream = () => {
             {!isLoading && categories.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 <button
-                  onClick={() => setActiveCategory(null)}
+                  onClick={() => {
+                    setActiveCategory(null);
+                    setVisibleCount(SIGNALS_PER_PAGE);
+                  }}
                   className={`px-3 py-1.5 text-xs font-mono rounded-full border transition-all ${
                     activeCategory === null
                       ? "bg-hologram-cyan/20 text-hologram-cyan border-hologram-cyan"
@@ -75,7 +83,10 @@ const ContentStream = () => {
                 {categories.map((cat) => (
                   <button
                     key={cat}
-                    onClick={() => setActiveCategory(cat)}
+                    onClick={() => {
+                      setActiveCategory(cat);
+                      setVisibleCount(SIGNALS_PER_PAGE);
+                    }}
                     className={`px-3 py-1.5 text-xs font-mono rounded-full border transition-all ${
                       activeCategory === cat
                         ? "bg-hologram-cyan/20 text-hologram-cyan border-hologram-cyan"
@@ -97,7 +108,7 @@ const ContentStream = () => {
             ) : (
               <div className="space-y-6">
                 <AnimatePresence mode="popLayout">
-                {filteredSignals.map((signal, index) => (
+                {visibleSignals.map((signal, index) => (
                   <motion.div
                     key={signal.id}
                     layout
@@ -124,6 +135,15 @@ const ContentStream = () => {
                   </motion.div>
                 ))}
                 </AnimatePresence>
+
+                {visibleCount < filteredSignals.length && (
+                  <button
+                    onClick={() => setVisibleCount((prev) => prev + SIGNALS_PER_PAGE)}
+                    className="w-full py-3 text-sm font-mono text-hologram-cyan border border-hologram-cyan/30 hover:bg-hologram-cyan/10 transition-all"
+                  >
+                    Show more ({filteredSignals.length - visibleCount} remaining)
+                  </button>
+                )}
               </div>
             )}
           </div>
