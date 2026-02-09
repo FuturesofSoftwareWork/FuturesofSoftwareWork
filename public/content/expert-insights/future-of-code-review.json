@@ -1,0 +1,15 @@
+{
+  "id": "future-of-code-review",
+  "title": "Code Review in the Age of AI: From Gatekeeping to Mentorship",
+  "author": "Prof. Mikko Lahtinen",
+  "authorRole": "University of Helsinki",
+  "excerpt": "When AI generates most of the code, the role of code review transforms from error detection to knowledge transfer and architectural stewardship.",
+  "paragraphs": [
+    "When AI generates most of the code, the role of code review transforms from error detection to knowledge transfer and architectural stewardship. Senior engineers become curators of system intent rather than line-by-line inspectors.",
+    "This shift demands new skills: the ability to evaluate AI-generated solutions against broader system goals, to articulate why one approach serves long-term maintainability better than another, and to mentor junior developers in thinking about software design rather than syntax.",
+    "Organizations that recognize this transformation early are already restructuring their development workflows to emphasize collaborative review sessions over asynchronous comment threads."
+  ],
+  "date": "2026-01-28",
+  "status": "published",
+  "tags": ["code-review", "mentorship", "architecture"]
+}
