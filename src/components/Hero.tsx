@@ -41,8 +41,8 @@ const Hero = () => {
             where AI meets human expertise.
           </p>
           <p className="text-lg text-hologram-cyan/80">
-            A collaboration between VTT, University of Helsinki, and Business
-            Finland.
+            A collaboration between VTT and University of Helsinki. Funded by
+            Business Finland.
           </p>
         </motion.div>
 
