@@ -1,15 +1,17 @@
-import { motion } from "framer-motion";
+import { useState, useCallback, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Bot, User, Newspaper, Sparkles } from "lucide-react";
 import { useContent } from "@/hooks/useContent";
 import { SignalSkeleton, InsightSkeleton } from "@/components/ContentSkeleton";
+import ContentDrawer from "@/components/ContentDrawer";
+import type { AISignalCategory, DrawerContent } from "@/types/content";
 
-const formatDetectedTime = (isoString: string): string => {
+const formatDetectedDate = (isoString: string): string => {
   const date = new Date(isoString);
-  return date.toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 };
 
@@ -18,6 +20,27 @@ const ContentStream = () => {
     maxSignals: 5,
     maxInsights: 3,
   });
+
+  const [drawerContent, setDrawerContent] = useState<DrawerContent | null>(
+    null,
+  );
+  const closeDrawer = useCallback(() => setDrawerContent(null), []);
+
+  const [activeCategory, setActiveCategory] =
+    useState<AISignalCategory | null>(null);
+
+  const categories = useMemo(() => {
+    const cats = new Set(
+      signals
+        .map((s) => s.category)
+        .filter((c): c is AISignalCategory => c != null),
+    );
+    return [...cats].sort();
+  }, [signals]);
+
+  const filteredSignals = activeCategory
+    ? signals.filter((s) => s.category === activeCategory)
+    : signals;
 
   return (
     <section className="bg-midnight min-h-screen py-20 px-4 relative">
@@ -36,23 +59,61 @@ const ContentStream = () => {
               </h2>
             </div>
 
+            {/* Category filter pills */}
+            {!isLoading && categories.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                <button
+                  onClick={() => setActiveCategory(null)}
+                  className={`px-3 py-1.5 text-xs font-mono rounded-full border transition-all ${
+                    activeCategory === null
+                      ? "bg-hologram-cyan/20 text-hologram-cyan border-hologram-cyan"
+                      : "bg-white/5 text-gray-400 border-white/10 hover:border-hologram-cyan/30"
+                  }`}
+                >
+                  All
+                </button>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-3 py-1.5 text-xs font-mono rounded-full border transition-all ${
+                      activeCategory === cat
+                        ? "bg-hologram-cyan/20 text-hologram-cyan border-hologram-cyan"
+                        : "bg-white/5 text-gray-400 border-white/10 hover:border-hologram-cyan/30"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {isLoading ? (
               <SignalSkeleton />
+            ) : filteredSignals.length === 0 ? (
+              <p className="text-gray-500 text-sm italic py-8">
+                No signals in this category.
+              </p>
             ) : (
               <div className="space-y-6">
-                {signals.map((signal, index) => (
+                <AnimatePresence mode="popLayout">
+                {filteredSignals.map((signal, index) => (
                   <motion.div
                     key={signal.id}
+                    layout
                     initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-black/40 border border-hologram-cyan/20 p-6 rounded-none border-l-4 border-l-hologram-cyan hover:bg-hologram-cyan/5 transition-all group cursor-pointer backdrop-blur-sm"
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ delay: index * 0.05 }}
+                    onClick={() =>
+                      setDrawerContent({ type: "signal", data: signal })
+                    }
+                    className="bg-black/40 border border-hologram-cyan/20 p-6 rounded-none border-l-4 border-l-hologram-cyan hover:bg-hologram-cyan/5 transition-[background-color] group cursor-pointer backdrop-blur-sm"
                   >
                     <div className="flex items-center gap-2 mb-3 text-xs text-hologram-cyan font-mono uppercase tracking-wider">
                       <Sparkles size={12} />
                       {signal.source} &bull;{" "}
-                      {formatDetectedTime(signal.detectedAt)}
+                      {formatDetectedDate(signal.detectedAt)}
                     </div>
                     <h3 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-hologram-cyan transition-colors">
                       {signal.title}
@@ -62,6 +123,7 @@ const ContentStream = () => {
                     </p>
                   </motion.div>
                 ))}
+                </AnimatePresence>
               </div>
             )}
           </div>
@@ -99,7 +161,12 @@ const ContentStream = () => {
                       <p key={pIndex}>{paragraph}</p>
                     ))}
                   </div>
-                  <button className="mt-8 text-neon-gold hover:text-white font-bold uppercase text-xs tracking-widest flex items-center gap-2 border border-neon-gold/50 px-6 py-3 rounded-full hover:bg-neon-gold/20 transition-all">
+                  <button
+                    onClick={() =>
+                      setDrawerContent({ type: "insight", data: insight })
+                    }
+                    className="mt-8 text-neon-gold hover:text-white font-bold uppercase text-xs tracking-widest flex items-center gap-2 border border-neon-gold/50 px-6 py-3 rounded-full hover:bg-neon-gold/20 transition-all"
+                  >
                     Read Full Article <Newspaper size={16} />
                   </button>
                 </motion.article>
@@ -108,6 +175,8 @@ const ContentStream = () => {
           )}
         </div>
       </div>
+
+      <ContentDrawer content={drawerContent} onClose={closeDrawer} />
     </section>
   );
 };
