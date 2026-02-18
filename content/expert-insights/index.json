@@ -6,6 +6,12 @@
       "file": "antti-klemetti-thesis.json",
       "date": "2026-02-18",
       "status": "published"
+    },
+    {
+      "id": "curation-as-cognitive-load-balancing",
+      "file": "curation-as-cognitive-load-balancing.json",
+      "date": "2026-02-18",
+      "status": "published"
     }
   ]
 }
