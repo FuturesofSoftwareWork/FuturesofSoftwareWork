@@ -1,10 +1,10 @@
 {
-"id": "2026-01-19-01",
+"id": "2026-02-18-02",
 "title": "Simon Willison’s link roundup: Scaling long-running autonomous coding (Cursor) and the browser-from-scratch experiment",
 "summary": "In his January 19 roundup, Simon Willison highlights Cursor’s experiments running many concurrent coding agents on a single project and using planner/worker/judge patterns to coordinate work at scale. He connects this to the importance of conformance suites and verification, noting skepticism when builds fail and credibility improves when instructions/tests are present. The implication is that “multi-agent” development is less about a single model and more about orchestration plus rigorous, automatable correctness signals.",
 "source": "Developer Blog",
 "sourceUrl": "https://simonwillison.net/2026/Jan/19/",
-"detectedAt": "2026-02-16T10:00:00Z",
+"detectedAt": "2026-02-18T10:00:00Z",
 "date": "2026-01-19",
 "status": "published",
 "tags": ["multi-agent", "verification", "conformance-suites"],
