@@ -120,3 +120,4 @@ dist
 # Vite
 dist-ssr
 *.local
+settings.local.json
