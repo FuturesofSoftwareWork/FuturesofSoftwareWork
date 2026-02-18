@@ -316,7 +316,7 @@ const InsightContent = ({ data }: { data: ExpertInsight }) => {
           rel="noopener noreferrer"
           className="mt-8 inline-flex items-center gap-2 text-neon-gold hover:text-white border border-neon-gold/50 px-6 py-3 rounded-full hover:bg-neon-gold/20 transition-all text-sm font-bold uppercase tracking-widest"
         >
-          Read Full Article <ExternalLink size={14} />
+          Link to Original Article <ExternalLink size={14} />
         </a>
       )}
     </>

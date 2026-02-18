@@ -27,8 +27,9 @@ const ContentStream = () => {
   );
   const closeDrawer = useCallback(() => setDrawerContent(null), []);
 
-  const [activeCategory, setActiveCategory] =
-    useState<AISignalCategory | null>(null);
+  const [activeCategory, setActiveCategory] = useState<AISignalCategory | null>(
+    null,
+  );
 
   const [visibleCount, setVisibleCount] = useState(SIGNALS_PER_PAGE);
 
@@ -108,40 +109,43 @@ const ContentStream = () => {
             ) : (
               <div className="space-y-6">
                 <AnimatePresence mode="popLayout">
-                {visibleSignals.map((signal, index) => (
-                  <motion.div
-                    key={signal.id}
-                    layout
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ delay: index * 0.05 }}
-                    onClick={() =>
-                      setDrawerContent({ type: "signal", data: signal })
-                    }
-                    className="bg-black/40 border border-hologram-cyan/20 p-6 rounded-none border-l-4 border-l-hologram-cyan hover:bg-hologram-cyan/5 transition-[background-color] group cursor-pointer backdrop-blur-sm"
-                  >
-                    <div className="flex items-center gap-2 mb-3 text-xs text-hologram-cyan font-mono uppercase tracking-wider">
-                      <Sparkles size={12} />
-                      {signal.source} &bull;{" "}
-                      {formatDetectedDate(signal.detectedAt)}
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-hologram-cyan transition-colors">
-                      {signal.title}
-                    </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      {signal.summary}
-                    </p>
-                  </motion.div>
-                ))}
+                  {visibleSignals.map((signal, index) => (
+                    <motion.div
+                      key={signal.id}
+                      layout
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ delay: index * 0.05 }}
+                      onClick={() =>
+                        setDrawerContent({ type: "signal", data: signal })
+                      }
+                      className="bg-black/40 border border-hologram-cyan/20 p-6 rounded-none border-l-4 border-l-hologram-cyan hover:bg-hologram-cyan/5 transition-[background-color] group cursor-pointer backdrop-blur-sm"
+                    >
+                      <div className="flex items-center gap-2 mb-3 text-xs text-hologram-cyan font-mono uppercase tracking-wider">
+                        <Sparkles size={12} />
+                        {signal.source} &bull;{" "}
+                        {formatDetectedDate(signal.detectedAt)}
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-hologram-cyan transition-colors">
+                        {signal.title}
+                      </h3>
+                      <p className="text-gray-400 text-sm leading-relaxed">
+                        {signal.summary}
+                      </p>
+                    </motion.div>
+                  ))}
                 </AnimatePresence>
 
                 {visibleCount < filteredSignals.length && (
                   <button
-                    onClick={() => setVisibleCount((prev) => prev + SIGNALS_PER_PAGE)}
+                    onClick={() =>
+                      setVisibleCount((prev) => prev + SIGNALS_PER_PAGE)
+                    }
                     className="w-full py-3 text-sm font-mono text-hologram-cyan border border-hologram-cyan/30 hover:bg-hologram-cyan/10 transition-all"
                   >
-                    Show more ({filteredSignals.length - visibleCount} remaining)
+                    Show more ({filteredSignals.length - visibleCount}{" "}
+                    remaining)
                   </button>
                 )}
               </div>
@@ -168,26 +172,22 @@ const ContentStream = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="bg-white/5 p-8 rounded-xl border border-white/5 hover:border-neon-gold/30 transition-all hover:bg-white/10"
+                  onClick={() =>
+                    setDrawerContent({ type: "insight", data: insight })
+                  }
+                  className="bg-white/5 p-8 rounded-xl border border-white/5 hover:border-neon-gold/30 transition-all hover:bg-white/10 cursor-pointer group"
                 >
                   <div className="flex items-center gap-2 mb-4 text-neon-gold font-serif italic">
                     By {insight.author} &bull; {insight.authorRole}
                   </div>
-                  <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">
+                  <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight group-hover:text-neon-gold transition-colors">
                     {insight.title}
                   </h3>
                   <div className="prose prose-invert max-w-none text-gray-300 font-serif leading-loose">
-                    {insight.paragraphs.map((paragraph, pIndex) => (
-                      <p key={pIndex}>{paragraph}</p>
-                    ))}
+                    <p>{insight.excerpt}</p>
                   </div>
-                  <button
-                    onClick={() =>
-                      setDrawerContent({ type: "insight", data: insight })
-                    }
-                    className="mt-8 text-neon-gold hover:text-white font-bold uppercase text-xs tracking-widest flex items-center gap-2 border border-neon-gold/50 px-6 py-3 rounded-full hover:bg-neon-gold/20 transition-all"
-                  >
-                    Read Full Article <Newspaper size={16} />
+                  <button className="mt-6 text-neon-gold hover:text-white font-bold uppercase text-xs tracking-widest flex items-center gap-2 border border-neon-gold/30 px-4 py-2 rounded-full hover:bg-neon-gold/20 transition-all">
+                    Read More <Newspaper size={14} />
                   </button>
                 </motion.article>
               ))}
