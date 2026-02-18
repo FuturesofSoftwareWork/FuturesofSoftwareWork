@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -12,6 +12,7 @@ import {
   Clock,
   LayoutGrid,
 } from "lucide-react";
+import Markdown from "react-markdown";
 import type { AISignal, ExpertInsight, DrawerContent } from "@/types/content";
 
 interface ContentDrawerProps {
@@ -78,7 +79,9 @@ const ContentDrawer = ({ content, onClose }: ContentDrawerProps) => {
             aria-label={
               isSignal ? "AI Signal details" : "Expert Insight article"
             }
-            className={`relative w-full max-w-2xl bg-midnight/95 backdrop-blur-md border-l-4 overflow-y-auto ${
+            className={`relative w-full ${
+              isSignal ? "max-w-2xl" : "max-w-4xl"
+            } bg-midnight/95 backdrop-blur-md border-l-4 overflow-y-auto ${
               isSignal ? "border-l-hologram-cyan" : "border-l-neon-gold"
             }`}
           >
@@ -259,6 +262,21 @@ const SignalContent = ({ data }: { data: AISignal }) => {
 };
 
 const InsightContent = ({ data }: { data: ExpertInsight }) => {
+  const [fetchedMarkdown, setFetchedMarkdown] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (data.markdownFile) {
+      const baseUrl = import.meta.env.BASE_URL;
+      const path = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+      fetch(`${path}content/expert-insights/${data.markdownFile}`)
+        .then((res) => res.text())
+        .then((text) => setFetchedMarkdown(text))
+        .catch((err) => console.error("Failed to load markdown file:", err));
+    } else {
+      setFetchedMarkdown(null);
+    }
+  }, [data.markdownFile]);
+
   const formattedDate = new Date(data.date).toLocaleDateString("en-GB", {
     weekday: "long",
     year: "numeric",
@@ -285,12 +303,93 @@ const InsightContent = ({ data }: { data: ExpertInsight }) => {
       </h2>
 
       {/* Full article body */}
-      <div className="prose prose-invert prose-lg max-w-none font-serif">
-        {data.paragraphs.map((paragraph, index) => (
-          <p key={index} className="text-gray-300 leading-loose mb-6">
-            {paragraph}
-          </p>
-        ))}
+      <div className="prose prose-invert prose-lg max-w-none font-serif text-gray-300">
+        {fetchedMarkdown || data.markdownContent ? (
+          <Markdown
+            components={{
+              h2: ({ node, ...props }: any) => (
+                <h3
+                  className="text-2xl font-bold text-neon-gold mt-8 mb-4"
+                  {...props}
+                />
+              ),
+              h3: ({ node, ...props }: any) => (
+                <h4
+                  className="text-xl font-bold text-neon-gold mt-6 mb-3"
+                  {...props}
+                />
+              ),
+              ul: ({ node, ...props }: any) => (
+                <ul className="list-disc pl-5 space-y-2 mb-6" {...props} />
+              ),
+              ol: ({ node, ...props }: any) => (
+                <ol className="list-decimal pl-5 space-y-2 mb-6" {...props} />
+              ),
+              li: ({ node, ...props }: any) => (
+                <li className="pl-1" {...props} />
+              ),
+              p: ({ node, ...props }: any) => (
+                <p className="leading-relaxed mb-6" {...props} />
+              ),
+              strong: ({ node, ...props }: any) => (
+                <strong className="text-white font-bold" {...props} />
+              ),
+              blockquote: ({ node, ...props }: any) => (
+                <blockquote
+                  className="border-l-4 border-neon-gold pl-4 italic my-6 text-gray-400"
+                  {...props}
+                />
+              ),
+            }}
+          >
+            {fetchedMarkdown || data.markdownContent}
+          </Markdown>
+        ) : data.content ? (
+          data.content.map((block, index) => {
+            switch (block.type) {
+              case "heading2":
+                return (
+                  <h3
+                    key={index}
+                    className="text-2xl font-bold text-white mt-8 mb-4"
+                  >
+                    {block.text}
+                  </h3>
+                );
+              case "heading3":
+                return (
+                  <h4
+                    key={index}
+                    className="text-xl font-bold text-neon-gold mt-6 mb-3"
+                  >
+                    {block.text}
+                  </h4>
+                );
+              case "list":
+                return (
+                  <ul key={index} className="list-disc pl-5 space-y-2 mb-6">
+                    {block.items.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                );
+              case "paragraph":
+                return (
+                  <p key={index} className="leading-loose mb-6">
+                    {block.text}
+                  </p>
+                );
+              default:
+                return null;
+            }
+          })
+        ) : (
+          data.paragraphs?.map((paragraph, index) => (
+            <p key={index} className="leading-loose mb-6">
+              {paragraph}
+            </p>
+          ))
+        )}
       </div>
 
       {/* Tags */}

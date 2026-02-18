@@ -25,13 +25,22 @@ export interface AISignal {
   decisionHorizon?: DecisionHorizon;
 }
 
+export type ContentBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "heading2"; text: string }
+  | { type: "heading3"; text: string }
+  | { type: "list"; items: string[] };
+
 export interface ExpertInsight {
   id: string;
   title: string;
   author: string;
   authorRole: string;
   excerpt: string;
-  paragraphs: string[];
+  content?: ContentBlock[];
+  markdownContent?: string;
+  markdownFile?: string;
+  paragraphs?: string[];
   date: string;
   status: "published" | "draft";
   tags?: string[];
