@@ -35,6 +35,7 @@ export interface ExpertInsight {
   date: string;
   status: "published" | "draft";
   tags?: string[];
+  url?: string;
 }
 
 export interface AISignalIndexEntry {

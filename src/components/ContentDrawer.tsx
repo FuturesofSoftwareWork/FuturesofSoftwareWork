@@ -79,9 +79,7 @@ const ContentDrawer = ({ content, onClose }: ContentDrawerProps) => {
               isSignal ? "AI Signal details" : "Expert Insight article"
             }
             className={`relative w-full max-w-2xl bg-midnight/95 backdrop-blur-md border-l-4 overflow-y-auto ${
-              isSignal
-                ? "border-l-hologram-cyan"
-                : "border-l-neon-gold"
+              isSignal ? "border-l-hologram-cyan" : "border-l-neon-gold"
             }`}
           >
             {/* Close button */}
@@ -308,6 +306,18 @@ const InsightContent = ({ data }: { data: ExpertInsight }) => {
             </span>
           ))}
         </div>
+      )}
+
+      {/* External Link */}
+      {data.url && (
+        <a
+          href={data.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 inline-flex items-center gap-2 text-neon-gold hover:text-white border border-neon-gold/50 px-6 py-3 rounded-full hover:bg-neon-gold/20 transition-all text-sm font-bold uppercase tracking-widest"
+        >
+          Read Full Article <ExternalLink size={14} />
+        </a>
       )}
     </>
   );

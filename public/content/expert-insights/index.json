@@ -2,15 +2,9 @@
   "lastUpdated": "2026-02-06T12:00:00Z",
   "items": [
     {
-      "id": "empathy-matters",
-      "file": "empathy-matters.json",
-      "date": "2026-02-04",
-      "status": "published"
-    },
-    {
-      "id": "future-of-code-review",
-      "file": "future-of-code-review.json",
-      "date": "2026-01-28",
+      "id": "antti-klemetti-thesis",
+      "file": "antti-klemetti-thesis.json",
+      "date": "2026-02-18",
       "status": "published"
     }
   ]
