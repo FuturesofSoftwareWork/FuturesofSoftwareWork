@@ -4,6 +4,7 @@ import { Bot, User, Newspaper, Sparkles } from "lucide-react";
 import { useContent } from "@/hooks/useContent";
 import { SignalSkeleton, InsightSkeleton } from "@/components/ContentSkeleton";
 import ContentDrawer from "@/components/ContentDrawer";
+import SignalControls from "@/components/SignalControls";
 import type { AISignalCategory, DrawerContent } from "@/types/content";
 
 const formatDetectedDate = (isoString: string): string => {
@@ -31,6 +32,9 @@ const ContentStream = () => {
     null,
   );
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
   const [visibleCount, setVisibleCount] = useState(SIGNALS_PER_PAGE);
 
   const categories = useMemo(() => {
@@ -42,9 +46,31 @@ const ContentStream = () => {
     return [...cats].sort();
   }, [signals]);
 
-  const filteredSignals = activeCategory
-    ? signals.filter((s) => s.category === activeCategory)
-    : signals;
+  const filteredSignals = useMemo(() => {
+    let result = signals;
+
+    // Filter by Category
+    if (activeCategory) {
+      result = result.filter((s) => s.category === activeCategory);
+    }
+
+    // Filter by Search Query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (s) =>
+          s.title.toLowerCase().includes(query) ||
+          s.summary.toLowerCase().includes(query),
+      );
+    }
+
+    // Sort by Date
+    return [...result].sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+  }, [signals, activeCategory, searchQuery, sortOrder]);
 
   const visibleSignals = filteredSignals.slice(0, visibleCount);
 
@@ -64,6 +90,14 @@ const ContentStream = () => {
                 AI <span className="text-hologram-cyan">Signal</span>
               </h2>
             </div>
+
+            {/* Search and Sort Controls */}
+            <SignalControls
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
+            />
 
             {/* Category filter pills */}
             {!isLoading && categories.length > 0 && (
