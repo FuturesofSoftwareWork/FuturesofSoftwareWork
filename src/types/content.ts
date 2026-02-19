@@ -7,11 +7,14 @@ export type AISignalCategory =
 
 export type DecisionHorizon = "2026" | "2027-2028" | "2029+";
 
+export type AISignalSourceType = "Academic" | "Article" | "Social" | "Video";
+
 export interface AISignal {
   id: string;
   title: string;
   summary: string;
   source: string;
+  sourceType?: AISignalSourceType;
   sourceUrl?: string;
   detectedAt: string;
   date: string;
