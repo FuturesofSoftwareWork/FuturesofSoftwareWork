@@ -3,7 +3,6 @@ export type AISignalCategory =
   | "AI Tools"
   | "SDLC Change"
   | "Quality Testing"
-  | "Security Risk"
   | "Org Leadership";
 
 export type DecisionHorizon = "2026" | "2027-2028" | "2029+";
@@ -18,7 +17,7 @@ export interface AISignal {
   date: string;
   status: "published" | "draft";
   tags?: string[];
-  category?: AISignalCategory;
+  category?: AISignalCategory | AISignalCategory[];
   whyItMatters?: string[];
   recommendedActions?: string[];
   risksAndCaveats?: string[];

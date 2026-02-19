@@ -34,15 +34,20 @@ const ContentStream = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [sortField, setSortField] = useState<"date" | "detectedAt">("date");
 
   const [visibleCount, setVisibleCount] = useState(SIGNALS_PER_PAGE);
 
   const categories = useMemo(() => {
-    const cats = new Set(
-      signals
-        .map((s) => s.category)
-        .filter((c): c is AISignalCategory => c != null),
-    );
+    const cats = new Set<AISignalCategory>();
+    signals.forEach((s) => {
+      if (!s.category) return;
+      if (Array.isArray(s.category)) {
+        s.category.forEach((c) => cats.add(c));
+      } else {
+        cats.add(s.category);
+      }
+    });
     return [...cats].sort();
   }, [signals]);
 
@@ -51,7 +56,13 @@ const ContentStream = () => {
 
     // Filter by Category
     if (activeCategory) {
-      result = result.filter((s) => s.category === activeCategory);
+      result = result.filter((s) => {
+        if (!s.category) return false;
+        if (Array.isArray(s.category)) {
+          return s.category.includes(activeCategory);
+        }
+        return s.category === activeCategory;
+      });
     }
 
     // Filter by Search Query
@@ -64,13 +75,13 @@ const ContentStream = () => {
       );
     }
 
-    // Sort by Date
+    // Sort
     return [...result].sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
+      const dateA = new Date(a[sortField]).getTime();
+      const dateB = new Date(b[sortField]).getTime();
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
-  }, [signals, activeCategory, searchQuery, sortOrder]);
+  }, [signals, activeCategory, searchQuery, sortOrder, sortField]);
 
   const visibleSignals = filteredSignals.slice(0, visibleCount);
 
@@ -97,6 +108,8 @@ const ContentStream = () => {
               setSearchQuery={setSearchQuery}
               sortOrder={sortOrder}
               setSortOrder={setSortOrder}
+              sortField={sortField}
+              setSortField={setSortField}
             />
 
             {/* Category filter pills */}
@@ -158,8 +171,11 @@ const ContentStream = () => {
                     >
                       <div className="flex items-center gap-2 mb-3 text-xs text-hologram-cyan font-mono uppercase tracking-wider">
                         <Sparkles size={12} />
-                        {signal.source} &bull;{" "}
-                        {formatDetectedDate(signal.detectedAt)}
+                        {signal.source} &bull; {formatDetectedDate(signal.date)}{" "}
+                        <span className="text-gray-500 normal-case tracking-normal ml-1">
+                          (Signal detected{" "}
+                          {formatDetectedDate(signal.detectedAt)})
+                        </span>
                       </div>
                       <h3 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-hologram-cyan transition-colors">
                         {signal.title}

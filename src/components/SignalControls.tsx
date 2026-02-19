@@ -6,6 +6,8 @@ interface SignalControlsProps {
   setSearchQuery: (query: string) => void;
   sortOrder: "asc" | "desc";
   setSortOrder: (order: "asc" | "desc") => void;
+  sortField: "date" | "detectedAt";
+  setSortField: (field: "date" | "detectedAt") => void;
 }
 
 const SignalControls = ({
@@ -13,6 +15,8 @@ const SignalControls = ({
   setSearchQuery,
   sortOrder,
   setSortOrder,
+  sortField,
+  setSortField,
 }: SignalControlsProps) => {
   return (
     <div className="relative mb-8 group">
@@ -46,10 +50,35 @@ const SignalControls = ({
         </div>
 
         {/* Sort Controls */}
-        <div className="flex items-center justify-between">
-          <div className="text-xs font-mono text-hologram-cyan/70 uppercase tracking-widest">
-            Sort by Date
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <div className="text-xs font-mono text-hologram-cyan/70 uppercase tracking-widest hidden sm:block">
+              Sort by:
+            </div>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setSortField("date")}
+                className={`px-3 py-1.5 border rounded-none text-xs font-mono transition-all ${
+                  sortField === "date"
+                    ? "bg-hologram-cyan/20 text-hologram-cyan border-hologram-cyan"
+                    : "bg-black/20 text-gray-400 border-white/10 hover:border-hologram-cyan/30 hover:text-gray-200"
+                }`}
+              >
+                Date
+              </button>
+              <button
+                onClick={() => setSortField("detectedAt")}
+                className={`px-3 py-1.5 border rounded-none text-xs font-mono transition-all ${
+                  sortField === "detectedAt"
+                    ? "bg-hologram-cyan/20 text-hologram-cyan border-hologram-cyan"
+                    : "bg-black/20 text-gray-400 border-white/10 hover:border-hologram-cyan/30 hover:text-gray-200"
+                }`}
+              >
+                Scanning Date
+              </button>
+            </div>
           </div>
+
           <button
             onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
             className="flex items-center gap-2 px-3 py-1.5 bg-black/20 border border-white/10 hover:border-hologram-cyan/30 rounded-none text-xs font-mono text-gray-300 hover:text-hologram-cyan transition-all group/sort"

@@ -117,19 +117,6 @@ const ContentDrawer = ({ content, onClose }: ContentDrawerProps) => {
 };
 
 const SignalContent = ({ data }: { data: AISignal }) => {
-  const formattedDate = new Date(data.detectedAt).toLocaleDateString("en-GB", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  const formattedTime = new Date(data.detectedAt).toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-
   return (
     <>
       {/* Top metadata row: source + category + decision horizon */}
@@ -139,10 +126,24 @@ const SignalContent = ({ data }: { data: AISignal }) => {
           {data.source}
         </div>
         {data.category && (
-          <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-hologram-cyan/30 text-hologram-cyan bg-hologram-cyan/10">
-            <LayoutGrid size={12} />
-            {data.category}
-          </span>
+          <>
+            {Array.isArray(data.category) ? (
+              data.category.map((cat) => (
+                <span
+                  key={cat}
+                  className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-hologram-cyan/30 text-hologram-cyan bg-hologram-cyan/10"
+                >
+                  <LayoutGrid size={12} />
+                  {cat}
+                </span>
+              ))
+            ) : (
+              <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-hologram-cyan/30 text-hologram-cyan bg-hologram-cyan/10">
+                <LayoutGrid size={12} />
+                {data.category}
+              </span>
+            )}
+          </>
         )}
         {data.decisionHorizon && (
           <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-electric-blue/30 text-electric-blue bg-electric-blue/10">
@@ -153,9 +154,24 @@ const SignalContent = ({ data }: { data: AISignal }) => {
       </div>
 
       {/* Date */}
-      <div className="flex items-center gap-2 mb-6 text-gray-500 text-sm">
-        <Calendar size={14} />
-        {formattedDate} at {formattedTime}
+      <div className="flex items-center gap-2 mb-6 text-sm">
+        <Calendar size={14} className="text-hologram-cyan" />
+        <span className="text-hologram-cyan font-mono">
+          {new Date(data.date).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+        </span>
+        <span className="text-gray-500 ml-1">
+          (Signal scanned:{" "}
+          {new Date(data.detectedAt).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+          )
+        </span>
       </div>
 
       {/* Title */}
