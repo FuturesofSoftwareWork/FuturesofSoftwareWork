@@ -8,7 +8,7 @@
 "date": "2026-02-07",
 "status": "published",
 "tags": ["context-engineering", "agentic-workflows", "devex"],
-"category": "Skills Learning",
+"category": "Skills & Learning",
 "whyItMatters": [
 "AI adoption shifts skill demand toward writing durable context (docs, runbooks, interfaces) that compounds across work.",
 "Teams with strong context practices can scale agent usage while reducing hallucinations and rework.",

@@ -8,7 +8,7 @@
 "date": "2026-02-02",
 "status": "published",
 "tags": ["developer-productivity", "skills", "learning", "ai-coding-assistants", "debugging", "governance"],
-"category": "Skills Learning",
+"category": "Skills & Learning",
 "whyItMatters": [
 "Because the measured speedup was small while learning loss was large, leaders should treat “time saved” claims as incomplete without capability/quality metrics—especially for junior-heavy teams.",
 "Because debugging and code reading were most affected, heavy AI reliance during onboarding can weaken the exact competencies needed for code review, incident response, and validating AI outputs.",
